@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Ongoing Orders - E-Commerce{% endblock %}
+
+{% block content %}
+<div class="orders-container">
+    <h2>Ongoing Orders</h2>
+    {% if orders %}
+        <div class="orders-list">
+            {% for order in orders %}
+                <div class="order-card">
+                    <div class="order-header">
+                        <h3>Order #{{ order.id }}</h3>
+                        <span class="order-status status-{{ order.status }}">{{ order.get_status_display }}</span>
+                    </div>
+                    <p class="order-date">Placed on: {{ order.created_at|date:"F d, Y" }}</p>
+                    <p class="order-total">Total: ${{ order.total_amount }}</p>
+                    <div class="order-items">
+                        {% for item in order.items.all %}
+                            <p>{{ item.product.name }} x {{ item.quantity }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="order-actions">
+                        <a href="{% url 'order_detail' order.id %}" class="btn btn-secondary">View Details</a>
+                        {% if order.status in 'pending,processing' %}
+                            <form method="POST" action="{% url 'cancel_order' order.id %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to cancel this order?')">Cancel Order</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="no-orders">No ongoing orders. <a href="{% url 'homepage' %}">Start shopping</a></p>
+    {% endif %}
+    
+    <a href="{% url 'order_history' %}" class="btn btn-secondary">View Order History</a>
+</div>
+{% endblock %}

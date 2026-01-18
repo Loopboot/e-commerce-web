@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Order History - E-Commerce{% endblock %}
+
+{% block content %}
+<div class="orders-container">
+    <h2>Order History</h2>
+    {% if orders %}
+        <div class="orders-list">
+            {% for order in orders %}
+                <div class="order-card">
+                    <div class="order-header">
+                        <h3>Order #{{ order.id }}</h3>
+                        <span class="order-status status-{{ order.status }}">{{ order.get_status_display }}</span>
+                    </div>
+                    <p class="order-date">Placed on: {{ order.created_at|date:"F d, Y" }}</p>
+                    <p class="order-total">Total: ${{ order.total_amount }}</p>
+                    <div class="order-items">
+                        {% for item in order.items.all %}
+                            <p>{{ item.product.name }} x {{ item.quantity }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="order-actions">
+                        <a href="{% url 'order_detail' order.id %}" class="btn btn-secondary">View Details</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="no-orders">No order history.</p>
+    {% endif %}
+    
+    <a href="{% url 'ongoing_orders' %}" class="btn btn-secondary">View Ongoing Orders</a>
+</div>
+{% endblock %}

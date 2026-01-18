@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ product.name }} - E-Commerce{% endblock %}
+
+{% block content %}
+<div class="product-detail">
+    <div class="product-detail-container">
+        <div class="product-detail-image">
+            {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            {% else %}
+                <div class="image-placeholder">No Image</div>
+            {% endif %}
+        </div>
+        <div class="product-detail-info">
+            <h1>{{ product.name }}</h1>
+            <p class="category">Category: {{ product.category }}</p>
+            <p class="price">${{ product.price }}</p>
+            <p class="stock">Available Stock: {{ product.stock }}</p>
+            <p class="description">{{ product.description }}</p>
+            
+            {% if user.is_authenticated %}
+                <form method="POST" action="{% url 'add_to_cart' product.id %}" class="add-to-cart-form">
+                    {% csrf_token %}
+                    <label for="quantity">Quantity:</label>
+                    <input type="number" name="quantity" id="quantity" value="1" min="1" max="{{ product.stock }}">
+                    <button type="submit" class="btn btn-primary">Add to Cart</button>
+                </form>
+            {% else %}
+                <p class="login-message">Please <a href="{% url 'login' %}">login</a> to purchase this product.</p>
+            {% endif %}
+            
+            <a href="{% url 'homepage' %}" class="btn btn-secondary">Back to Products</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

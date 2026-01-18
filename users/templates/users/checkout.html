@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Checkout - E-Commerce{% endblock %}
+
+{% block content %}
+<div class="checkout-container">
+    <h2>Checkout</h2>
+    <div class="checkout-content">
+        <div class="order-summary">
+            <h3>Order Summary</h3>
+            <table class="summary-table">
+                {% for item in cart_items %}
+                    <tr>
+                        <td>{{ item.product.name }} x {{ item.quantity }}</td>
+                        <td>${{ item.get_total_price }}</td>
+                    </tr>
+                {% endfor %}
+                <tr class="total-row">
+                    <td><strong>Total:</strong></td>
+                    <td><strong>${{ total }}</strong></td>
+                </tr>
+            </table>
+        </div>
+        
+        <div class="shipping-form">
+            <h3>Shipping Address</h3>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="shipping_address">Address:</label>
+                    <textarea name="shipping_address" id="shipping_address" rows="5" required>{% if profile.address %}{{ profile.address }}, {{ profile.city }}, {{ profile.state }} - {{ profile.pincode }}{% endif %}</textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Place Order</button>
+                <a href="{% url 'cart' %}" class="btn btn-secondary">Back to Cart</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

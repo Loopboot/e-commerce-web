@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}My Profile - E-Commerce{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <h2>My Profile</h2>
+    <form method="POST" class="profile-form">
+        {% csrf_token %}
+        <div class="form-group">
+            <label>Username:</label>
+            <input type="text" value="{{ user.username }}" disabled>
+        </div>
+        <div class="form-group">
+            <label>Email:</label>
+            <input type="email" value="{{ user.email }}" disabled>
+        </div>
+        <div class="form-group">
+            <label for="phone">Phone:</label>
+            <input type="text" name="phone" id="phone" value="{{ profile.phone }}">
+        </div>
+        <div class="form-group">
+            <label for="address">Address:</label>
+            <textarea name="address" id="address" rows="3">{{ profile.address }}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="city">City:</label>
+            <input type="text" name="city" id="city" value="{{ profile.city }}">
+        </div>
+        <div class="form-group">
+            <label for="state">State:</label>
+            <input type="text" name="state" id="state" value="{{ profile.state }}">
+        </div>
+        <div class="form-group">
+            <label for="pincode">Pincode:</label>
+            <input type="text" name="pincode" id="pincode" value="{{ profile.pincode }}">
+        </div>
+        <button type="submit" class="btn btn-primary">Update Profile</button>
+    </form>
+</div>
+{% endblock %}

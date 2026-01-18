@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Dashboard - E-Commerce{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+    <h2>Admin Dashboard</h2>
+    <div class="dashboard-stats">
+        <div class="stat-card">
+            <h3>{{ total_products }}</h3>
+            <p>Total Products</p>
+        </div>
+        <div class="stat-card">
+            <h3>{{ total_orders }}</h3>
+            <p>Total Orders</p>
+        </div>
+        <div class="stat-card">
+            <h3>{{ total_users }}</h3>
+            <p>Total Users</p>
+        </div>
+        <div class="stat-card">
+            <h3>{{ pending_orders }}</h3>
+            <p>Pending Orders</p>
+        </div>
+    </div>
+    
+    <div class="admin-links">
+        <a href="{% url 'manage_products' %}" class="btn btn-primary">Manage Products</a>
+        <a href="{% url 'manage_orders' %}" class="btn btn-primary">Manage Orders</a>
+        <a href="{% url 'manage_users' %}" class="btn btn-primary">Manage Users</a>
+    </div>
+</div>
+{% endblock %}

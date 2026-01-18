@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Register - E-Commerce{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <h2>Register</h2>
+    <form method="POST" class="auth-form">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="{{ form.username.id_for_label }}">Username:</label>
+            {{ form.username }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.password1.id_for_label }}">Password:</label>
+            {{ form.password1 }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.password2.id_for_label }}">Confirm Password:</label>
+            {{ form.password2 }}
+        </div>
+        {% if form.errors %}
+            <div class="form-errors">
+                {{ form.errors }}
+            </div>
+        {% endif %}
+        <button type="submit" class="btn btn-primary">Register</button>
+        <p class="auth-link">Already have an account? <a href="{% url 'login' %}">Login</a></p>
+    </form>
+</div>
+{% endblock %}

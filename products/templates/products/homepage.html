@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home - E-Commerce{% endblock %}
+
+{% block content %}
+<div class="homepage">
+    <div class="search-section">
+        <h1>Welcome to E-Commerce</h1>
+        <form method="GET" action="{% url 'homepage' %}" class="search-form">
+            <input type="text" name="q" placeholder="Search products..." value="{{ query }}" class="search-input">
+            <button type="submit" class="search-btn">Search</button>
+        </form>
+    </div>
+
+    <div class="products-section">
+        <h2>Products</h2>
+        {% if products %}
+            <div class="products-grid">
+                {% for product in products %}
+                    <div class="product-card">
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
+                        {% else %}
+                            <div class="product-image-placeholder">No Image</div>
+                        {% endif %}
+                        <div class="product-info">
+                            <h3>{{ product.name }}</h3>
+                            <p class="product-category">{{ product.category }}</p>
+                            <p class="product-description">{{ product.description|truncatewords:20 }}</p>
+                            <p class="product-price">${{ product.price }}</p>
+                            <p class="product-stock">Stock: {{ product.stock }}</p>
+                            <div class="product-actions">
+                                <a href="{% url 'product_detail' product.id %}" class="btn btn-secondary">View Details</a>
+                                {% if user.is_authenticated %}
+                                    <form method="POST" action="{% url 'add_to_cart' product.id %}" style="display:inline;">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="quantity" value="1">
+                                        <button type="submit" class="btn btn-primary">Add to Cart</button>
+                                    </form>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="no-products">No products found.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/products.js' %}"></script>
+{% endblock %}

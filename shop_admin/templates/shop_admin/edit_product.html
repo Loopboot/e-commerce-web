@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Product - E-Commerce{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+    <h2>Edit Product</h2>
+    <form method="POST" enctype="multipart/form-data" class="admin-form">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="name">Product Name:</label>
+            <input type="text" name="name" id="name" value="{{ product.name }}" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea name="description" id="description" rows="4" required>{{ product.description }}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="price">Price:</label>
+            <input type="number" name="price" id="price" step="0.01" min="0" value="{{ product.price }}" required>
+        </div>
+        <div class="form-group">
+            <label for="stock">Stock:</label>
+            <input type="number" name="stock" id="stock" min="0" value="{{ product.stock }}" required>
+        </div>
+        <div class="form-group">
+            <label for="category">Category:</label>
+            <input type="text" name="category" id="category" value="{{ product.category }}" required>
+        </div>
+        <div class="form-group">
+            <label for="image">Image:</label>
+            {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width:200px;display:block;margin:10px 0;">
+            {% endif %}
+            <input type="file" name="image" id="image" accept="image/*">
+        </div>
+        <button type="submit" class="btn btn-primary">Update Product</button>
+        <a href="{% url 'manage_products' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}
