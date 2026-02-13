@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: e-commerce-web
+    env: python
+    plan: free
+    region: oregon
+    buildCommand: "pip install poetry && poetry install --no-dev && python manage.py collectstatic --noinput"
+    startCommand: "gunicorn main.wsgi:application --bind 0.0.0.0:$PORT"
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: main.settings
+      - key: RENDER_ENV
+        value: production
+        sync: false
+    disk: 1024
+
+# Notes:
+# - This uses the project's SQLite database at db.sqlite3 (suitable for testing/demo only).
+# - Whitenoise handles static file serving; collectstatic runs during build.
